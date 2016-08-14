@@ -48,14 +48,17 @@ guidelines when reporting a new bug.
   if you're not sure if what you're seeing is a bug. You can also ask in the
   `#scrapy` IRC channel.
 
-* write complete, reproducible, specific bug reports. The smaller the test
+* write **complete, reproducible, specific bug reports**. The smaller the test
   case, the better. Remember that other developers won't have your project to
   reproduce the bug, so please include all relevant files required to reproduce
-  it.
+  it. See for example StackOverflow's guide on creating a
+  `Minimal, Complete, and Verifiable example`_ exhibiting the issue.
 
 * include the output of ``scrapy version -v`` so developers working on your bug
   know exactly which version and platform it occurred on, which is often very
   helpful for reproducing it, or knowing if it was already fixed.
+
+.. _Minimal, Complete, and Verifiable example: https://stackoverflow.com/help/mcve
 
 Writing patches
 ===============
@@ -83,7 +86,7 @@ Well-written patches should:
 Submitting patches
 ==================
 
-The best way to submit a patch is to issue a `pull request`_ on Github,
+The best way to submit a patch is to issue a `pull request`_ on GitHub,
 optionally creating a new issue first.
 
 Remember to explain what was fixed or the new functionality (what it is, why
@@ -93,10 +96,15 @@ developers to understand and accept your patch.
 You can also discuss the new functionality (or bug fix) before creating the
 patch, but it's always good to have a patch ready to illustrate your arguments
 and show that you have put some additional thought into the subject. A good
-starting point is to send a pull request on Github. It can be simple enough to
+starting point is to send a pull request on GitHub. It can be simple enough to
 illustrate your idea, and leave documentation/tests for later, after the idea
 has been validated and proven useful. Alternatively, you can send an email to
 `scrapy-users`_ to discuss your idea first.
+When writing GitHub pull requests, try to keep titles short but descriptive.
+E.g. For bug #411: "Scrapy hangs if an exception raises in start_requests"
+prefer "Fix hanging when exception occurs in start_requests (#411)"
+instead of "Fix for #411".
+Complete titles make it easy to skim through the issue tracker.
 
 Finally, try to keep aesthetic changes (:pep:`8` compliance, unused imports
 removal, etc) in separate commits than functional changes. This will make pull
@@ -120,7 +128,7 @@ Scrapy Contrib
 ==============
 
 Scrapy contrib shares a similar rationale as Django contrib, which is explained
-in `this post <http://jacobian.org/writing/what-is-django-contrib/>`_. If you
+in `this post <https://jacobian.org/writing/what-is-django-contrib/>`_. If you
 are working on a new functionality, please follow that rationale to decide
 whether it should be a Scrapy contrib. If unsure, you can ask in
 `scrapy-users`_.
@@ -189,7 +197,7 @@ And their unit-tests are in::
 
 .. _issue tracker: https://github.com/scrapy/scrapy/issues
 .. _scrapy-users: https://groups.google.com/forum/#!forum/scrapy-users
-.. _Twisted unit-testing framework: http://twistedmatrix.com/documents/current/core/development/policy/test-standard.html
+.. _Twisted unit-testing framework: https://twistedmatrix.com/documents/current/core/development/policy/test-standard.html
 .. _AUTHORS: https://github.com/scrapy/scrapy/blob/master/AUTHORS
 .. _tests/: https://github.com/scrapy/scrapy/tree/master/tests
 .. _open issues: https://github.com/scrapy/scrapy/issues

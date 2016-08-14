@@ -93,9 +93,9 @@ DOWNLOADER_MIDDLEWARES_BASE = {
     'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware': 100,
     'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
     'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 400,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 500,
-    'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': 550,
+    'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': 400,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 550,
     'scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware': 560,
     'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 590,
@@ -134,10 +134,12 @@ EXTENSIONS_BASE = {
     'scrapy.extensions.throttle.AutoThrottle': 0,
 }
 
+FEED_TEMPDIR = None
 FEED_URI = None
 FEED_URI_PARAMS = None  # a function to extend uri arguments
 FEED_FORMAT = 'jsonlines'
 FEED_STORE_EMPTY = False
+FEED_EXPORT_ENCODING = None
 FEED_EXPORT_FIELDS = None
 FEED_STORAGES = {}
 FEED_STORAGES_BASE = {
@@ -175,6 +177,8 @@ HTTPCACHE_GZIP = False
 
 HTTPPROXY_AUTH_ENCODING = 'latin-1'
 
+IMAGES_STORE_S3_ACL = 'private'
+
 ITEM_PROCESSOR = 'scrapy.pipelines.ItemPipelineManager'
 
 ITEM_PIPELINES = {}
@@ -189,7 +193,7 @@ LOG_STDOUT = False
 LOG_LEVEL = 'DEBUG'
 LOG_FILE = None
 
-LOG_UNSERIALIZABLE_REQUESTS = False
+SCHEDULER_DEBUG = False
 
 LOGSTATS_INTERVAL = 60.0
 
@@ -234,6 +238,7 @@ ROBOTSTXT_OBEY = False
 SCHEDULER = 'scrapy.core.scheduler.Scheduler'
 SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleLifoDiskQueue'
 SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.LifoMemoryQueue'
+SCHEDULER_PRIORITY_QUEUE = 'queuelib.PriorityQueue'
 
 SPIDER_LOADER_CLASS = 'scrapy.spiderloader.SpiderLoader'
 

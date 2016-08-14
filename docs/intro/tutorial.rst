@@ -7,7 +7,7 @@ Scrapy Tutorial
 In this tutorial, we'll assume that Scrapy is already installed on your system.
 If that's not the case, see :ref:`intro-install`.
 
-We are going to use `Open directory project (dmoz) <http://www.dmoz.org/>`_ as
+We are going to use `Open directory project (dmoz) <https://www.dmoz.org/>`_ as
 our example domain to scrape.
 
 This tutorial will walk you through these tasks:
@@ -191,8 +191,8 @@ based on `XPath`_ or `CSS`_ expressions called :ref:`Scrapy Selectors
 <topics-selectors>`.  For more information about selectors and other extraction
 mechanisms see the :ref:`Selectors documentation <topics-selectors>`.
 
-.. _XPath: http://www.w3.org/TR/xpath
-.. _CSS: http://www.w3.org/TR/selectors
+.. _XPath: https://www.w3.org/TR/xpath
+.. _CSS: https://www.w3.org/TR/selectors
 
 Here are some examples of XPath expressions and their meanings:
 
@@ -470,12 +470,12 @@ Here is a modification to our spider that does just that::
                 item['desc'] = sel.xpath('text()').extract()
                 yield item
 
-Now the `parse()` method only extract the interesting links from the page,
+Now the `parse()` method only extracts the interesting links from the page,
 builds a full absolute URL using the `response.urljoin` method (since the links can
 be relative) and yields new requests to be sent later, registering as callback
 the method `parse_dir_contents()` that will ultimately scrape the data we want.
 
-What you see here is the Scrapy's mechanism of following links: when you yield
+What you see here is Scrapy's mechanism of following links: when you yield
 a Request in a callback method, Scrapy will schedule that request to be sent
 and register a callback method to be executed when that request finishes.
 
@@ -483,7 +483,7 @@ Using this, you can build complex crawlers that follow links according to rules
 you define, and extract different kinds of data depending on the page it's
 visiting.
 
-A common pattern is a callback method that extract some items, looks for a link
+A common pattern is a callback method that extracts some items, looks for a link
 to follow to the next page and then yields a `Request` with the same callback
 for it::
 
@@ -544,5 +544,5 @@ Then, we recommend you continue by playing with an example project (see
 :ref:`intro-examples`), and then continue with the section
 :ref:`section-basics`.
 
-.. _JSON: http://en.wikipedia.org/wiki/JSON
+.. _JSON: https://en.wikipedia.org/wiki/JSON
 .. _dirbot: https://github.com/scrapy/dirbot

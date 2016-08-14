@@ -29,7 +29,7 @@ the same media to that queue. This avoids downloading the same media more than
 once when it's shared by several items.
 
 Using the Files Pipeline
-=========================
+========================
 
 The typical workflow, when using the :class:`FilesPipeline` goes like
 this:
@@ -77,34 +77,10 @@ PIL.
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 
 
-Usage example
-=============
-
-In order to use a media pipeline first, :ref:`enable it
-<topics-media-pipeline-enabling>`.
-
-Then, if a spider returns a dict with the URLs key ('file_urls' or
-'image_urls', for the Files or Images Pipeline respectively), the pipeline will
-put the results under respective key ('files' or images').
-
-If you prefer to use :class:`~.Item`, then define a custom item with the
-necessary fields, like in this example for Images Pipeline::
-
-    import scrapy
-
-    class MyItem(scrapy.Item):
-
-        # ... other item fields ...
-        image_urls = scrapy.Field()
-        images = scrapy.Field()
-        
-If you need something more complex and want to override the custom pipeline
-behaviour, see :ref:`topics-media-pipeline-override`.
-
 .. _topics-media-pipeline-enabling:
 
 Enabling your Media Pipeline
-=============================
+============================
 
 .. setting:: IMAGES_STORE
 .. setting:: FILES_STORE
@@ -141,9 +117,9 @@ Supported Storage
 =================
 
 File system is currently the only officially supported storage, but there is
-also (undocumented) support for storing files in `Amazon S3`_.
+also support for storing files in `Amazon S3`_.
 
-.. _Amazon S3: http://aws.amazon.com/s3/
+.. _Amazon S3: https://aws.amazon.com/s3/
 
 File system storage
 -------------------
@@ -170,12 +146,87 @@ Where:
 * ``full`` is a sub-directory to separate full images from thumbnails (if
   used). For more info see :ref:`topics-images-thumbnails`.
 
+Amazon S3 storage
+-----------------
+
+.. setting:: FILES_STORE_S3_ACL
+.. setting:: IMAGES_STORE_S3_ACL
+
+:setting:`FILES_STORE` and :setting:`IMAGES_STORE` can represent an Amazon S3
+bucket. Scrapy will automatically upload the files to the bucket.
+
+For example, this is a valid :setting:`IMAGES_STORE` value::
+
+    IMAGES_STORE = 's3://bucket/images'
+
+You can modify the Access Control List (ACL) policy used for the stored files,
+which is defined by the :setting:`FILES_STORE_S3_ACL` and
+:setting:`IMAGES_STORE_S3_ACL` settings. By default, the ACL is set to
+``private``. To make the files publicly available use the ``public-read``
+policy::
+
+    IMAGES_STORE_S3_ACL = 'public-read'
+
+For more information, see `canned ACLs`_ in the Amazon S3 Developer Guide.
+
+.. _canned ACLs: http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+
+Usage example
+=============
+
+.. setting:: FILES_URLS_FIELD
+.. setting:: FILES_RESULT_FIELD
+.. setting:: IMAGES_URLS_FIELD
+.. setting:: IMAGES_RESULT_FIELD
+
+In order to use a media pipeline first, :ref:`enable it
+<topics-media-pipeline-enabling>`.
+
+Then, if a spider returns a dict with the URLs key (``file_urls`` or
+``image_urls``, for the Files or Images Pipeline respectively), the pipeline will
+put the results under respective key (``files`` or ``images``).
+
+If you prefer to use :class:`~.Item`, then define a custom item with the
+necessary fields, like in this example for Images Pipeline::
+
+    import scrapy
+
+    class MyItem(scrapy.Item):
+
+        # ... other item fields ...
+        image_urls = scrapy.Field()
+        images = scrapy.Field()
+
+If you want to use another field name for the URLs key or for the results key,
+it is also possible to override it.
+
+For the Files Pipeline, set :setting:`FILES_URLS_FIELD` and/or
+:setting:`FILES_RESULT_FIELD` settings::
+
+    FILES_URLS_FIELD = 'field_name_for_your_files_urls'
+    FILES_RESULT_FIELD = 'field_name_for_your_processed_files'
+
+For the Images Pipeline, set :setting:`IMAGES_URLS_FIELD` and/or
+:setting:`IMAGES_RESULT_FIELD` settings::
+
+    IMAGES_URLS_FIELD = 'field_name_for_your_images_urls'
+    IMAGES_RESULT_FIELD = 'field_name_for_your_processed_images'
+
+If you need something more complex and want to override the custom pipeline
+behaviour, see :ref:`topics-media-pipeline-override`.
+
+If you have multiple image pipelines inheriting from ImagePipeline and you want
+to have different settings in different pipelines you can set setting keys
+preceded with uppercase name of your pipeline class. E.g. if your pipeline is
+called MyPipeline and you want to have custom IMAGES_URLS_FIELD you define
+setting MYPIPELINE_IMAGES_URLS_FIELD and your custom settings will be used.
+
 
 Additional features
 ===================
 
 File expiration
-----------------
+---------------
 
 .. setting:: IMAGES_EXPIRES
 .. setting:: FILES_EXPIRES
@@ -185,11 +236,21 @@ adjust this retention delay use the :setting:`FILES_EXPIRES` setting (or
 :setting:`IMAGES_EXPIRES`, in case of Images Pipeline), which
 specifies the delay in number of days::
 
-    # 90 days of delay for files expiration
-    FILES_EXPIRES = 90
+    # 120 days of delay for files expiration
+    FILES_EXPIRES = 120
 
     # 30 days of delay for images expiration
     IMAGES_EXPIRES = 30
+
+The default value for both settings is 90 days.
+
+If you have pipeline that subclasses FilesPipeline and you'd like to have
+different setting for it you can set setting keys preceded by uppercase
+class name. E.g. given pipeline class called MyPipeline you can set setting key:
+
+    MYPIPELINE_FILES_EXPIRES = 180
+
+and pipeline class MyPipeline will have expiration time set to 180.
 
 .. _topics-images-thumbnails:
 
@@ -223,7 +284,7 @@ Where:
 
 * ``<image_id>`` is the `SHA1 hash`_ of the image url
 
-.. _SHA1 hash: http://en.wikipedia.org/wiki/SHA_hash_functions
+.. _SHA1 hash: https://en.wikipedia.org/wiki/SHA_hash_functions
 
 Example of image files stored using ``small`` and ``big`` thumbnail names::
 
@@ -249,7 +310,13 @@ For example::
    IMAGES_MIN_HEIGHT = 110
    IMAGES_MIN_WIDTH = 110
 
-Note: these size constraints don't affect thumbnail generation at all.
+.. note::
+    The size constraints don't affect thumbnail generation at all.
+
+It is possible to set just one size constraint or both. When setting both of
+them, only images that satisfy both minimum sizes will be saved. For the
+above example, images of sizes (105 x 105) or (105 x 200) or (200 x 105) will
+all be dropped because at least one dimension is shorter than the constraint.
 
 By default, there are no size constraints, so all images are processed.
 
@@ -390,5 +457,5 @@ above::
             item['image_paths'] = image_paths
             return item
 
-.. _Twisted Failure: http://twistedmatrix.com/documents/current/api/twisted.python.failure.Failure.html
-.. _MD5 hash: http://en.wikipedia.org/wiki/MD5
+.. _Twisted Failure: https://twistedmatrix.com/documents/current/api/twisted.python.failure.Failure.html
+.. _MD5 hash: https://en.wikipedia.org/wiki/MD5

@@ -18,7 +18,7 @@ the typical way of running Scrapy via ``scrapy crawl``.
 Remember that Scrapy is built on top of the Twisted
 asynchronous networking library, so you need to run it inside the Twisted reactor.
 
-First utility you can use to run your spiders is
+The first utility you can use to run your spiders is
 :class:`scrapy.crawler.CrawlerProcess`. This class will start a Twisted reactor
 for you, configuring the logging and setting shutdown handlers. This class is
 the one used by all Scrapy commands.
@@ -251,5 +251,5 @@ If you are still unable to prevent your bot getting banned, consider contacting
 .. _ProxyMesh: http://proxymesh.com/
 .. _Google cache: http://www.googleguide.com/cached_pages.html
 .. _testspiders: https://github.com/scrapinghub/testspiders
-.. _Twisted Reactor Overview: http://twistedmatrix.com/documents/current/core/howto/reactor-basics.html
+.. _Twisted Reactor Overview: https://twistedmatrix.com/documents/current/core/howto/reactor-basics.html
 .. _Crawlera: http://scrapinghub.com/crawlera
